@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from .models import Room, Topic
 from .forms import RoomCreateForm
 from django.db.models import Q
+from django.contrib import messages
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
 
 
 def home(request):
@@ -52,8 +55,27 @@ def delete(request, pk):
 
 
 def loginUser(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        try:
+            User.objects.get(username=username)
+        except:
+            messages.error(request, 'Username doesnot exist.')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.error(request, 'Username and Password doesnot match')
+    return render(request, 'new_app/login_registration.html', {})
+
+
+def registerUser(request):
     pass
 
 
 def logoutUser(request):
-    pass
+    logout(request)
+    return redirect('home')
