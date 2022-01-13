@@ -16,12 +16,6 @@
         <input type="submit" value="Login" />
         <p>haven't signed up?</p>
         <a href="{% url 'register' %}">sign up</a>
-
-        {% if messages %}
-        {% for message in messages %}
-        <p><b>{{message}}</b></p>
-        {% endfor %}
-        {% endif %}
     </form>
 </div>
 
@@ -31,21 +25,11 @@
     <form method="post" action="">
         {% csrf_token %}
 
-        <label for="username">Username: </label>
-        <input type='text' placeholder="username" name="username" />
-
-        <label for="password">Password: </label>
-        <input type='password' placeholder="password" name="password" />
+        {{form.as_p}}
 
         <input type="submit" value="register" />
         <p>already a user?</p>
         <a href="{% url 'login' %}">login</a>
-
-        {% if messages %}
-        {% for message in messages %}
-        <p><b>{{message}}</b></p>
-        {% endfor %}
-        {% endif %}
     </form>
 </div>
 {% endif %}
