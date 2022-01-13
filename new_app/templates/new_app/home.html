@@ -11,32 +11,22 @@
 </style>
 
 <div class="home-container">
-
     <div>
         <h3>Browse Topic</h3>
         <hr />
-
         <a href="{% url 'home'%}">
-            <p>
-                All
-            </p>
+            <p>All</p>
         </a>
 
         {% for topic in topics %}
             <a href="{% url 'home'%}?q={{topic.name}}">
-                <p>
-                    {{topic.name}}
-                </p>    
+                <p>{{topic.name}}</p>    
             </a>
         {% endfor %}
     </div>
-
     <div>
-        <span>
-            Total number of result is {{rooms_count}}
-        </span>
-        <div><a href="{% url 'create' %}"><h3>Create a New</h3></a></div>
-
+        <span>Total number of result is {{rooms_count}}</span>
+        <a href="{% url 'create' %}"><h3>Create a New</h3></a>
         <div>        
             {% for room in rooms %}
             <p>
@@ -46,9 +36,7 @@
             </p>
             {% endfor %}
         </div>
-    </div>
-
-    
+    </div>    
 </div>
 
 {% endblock %}
