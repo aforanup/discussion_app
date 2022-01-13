@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.http import HttpResponse
 from .models import Room, Topic
 from .forms import RoomCreateForm
 from django.db.models import Q
@@ -41,6 +42,9 @@ def update(request, pk):
     room = Room.objects.get(id=pk)
     form = RoomCreateForm(instance=room)
 
+    if request.user != room.user:
+        return HttpResponse('You are not allowed to edit this room!!')
+
     if request.method == 'POST':
         form = RoomCreateForm(request.POST, instance=room)
         if form.is_valid():
@@ -52,6 +56,10 @@ def update(request, pk):
 @login_required(login_url='login')
 def delete(request, pk):
     room = Room.objects.get(id=pk)
+
+    if request.user != room.user:
+        return HttpResponse('You are not allowed to delete this room!!')
+
     if request.method == 'POST':
         room.delete()
         return redirect('home')
@@ -59,6 +67,10 @@ def delete(request, pk):
 
 
 def loginUser(request):
+    page = 'login'
+
+    if request.user.is_authenticated:
+        return redirect('home')
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -73,11 +85,12 @@ def loginUser(request):
             return redirect('home')
         else:
             messages.error(request, 'Username and Password doesnot match')
-    return render(request, 'new_app/login_registration.html', {})
+    return render(request, 'new_app/login_registration.html', {'page': page})
 
 
 def registerUser(request):
-    pass
+    page = 'register'
+    return render(request, 'new_app/login_registration.html', {'page': page})
 
 
 def logoutUser(request):
