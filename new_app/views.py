@@ -5,6 +5,7 @@ from django.db.models import Q
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 
 def home(request):
@@ -23,6 +24,7 @@ def room(request, pk):
     return render(request, 'new_app/room.html', {'room': room})
 
 
+@login_required(login_url='login')
 def create(request):
     form = RoomCreateForm
     if request.method == 'POST':
@@ -34,6 +36,7 @@ def create(request):
     return render(request, 'new_app/create.html', {'form': form})
 
 
+@login_required(login_url='login')
 def update(request, pk):
     room = Room.objects.get(id=pk)
     form = RoomCreateForm(instance=room)
@@ -46,6 +49,7 @@ def update(request, pk):
     return render(request, 'new_app/create.html', {'form': form})
 
 
+@login_required(login_url='login')
 def delete(request, pk):
     room = Room.objects.get(id=pk)
     if request.method == 'POST':
