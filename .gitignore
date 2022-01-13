@@ -1,1 +1,16 @@
 db.sqlite3
+*.pyc
+__pycache__/
+migrations
+stacticcdn
+.idea/
+.idea
+media/
+staticcdn/
+.vscode/
+venv/
+env/
+credentials.yaml
+build/
+logs/
+.history/
