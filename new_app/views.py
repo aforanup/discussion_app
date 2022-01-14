@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Room, Topic
+from .models import Room, Topic, RoomComment
 from .forms import RoomCreateForm
 from django.db.models import Q
 from django.contrib import messages
@@ -23,7 +23,18 @@ def home(request):
 
 def room(request, pk):
     room = Room.objects.get(id=pk)
-    return render(request, 'new_app/room.html', {'room': room})
+    comment = room.roomcomment_set.all().order_by('-created_on')
+    if request.method == 'POST':
+        user = request.user
+        comment = request.POST.get('comment')
+        RoomComment.objects.create(
+            user=user,
+            comment=comment,
+            room=room
+        )
+        return redirect('room', pk)
+    context = {'room': room, 'comments': comment}
+    return render(request, 'new_app/room.html', context)
 
 
 @login_required(login_url='login')
@@ -73,7 +84,7 @@ def loginUser(request):
     if request.user.is_authenticated:
         return redirect('home')
     if request.method == 'POST':
-        username = request.POST.get('username')
+        username = request.POST.get('username').lower()
         password = request.POST.get('password')
 
         try:
@@ -106,4 +117,4 @@ def registerUser(request):
 
 def logoutUser(request):
     logout(request)
-    return redirect('home')
+    return redirect('login')
