@@ -24,16 +24,16 @@ def home(request):
 def room(request, pk):
     room = Room.objects.get(id=pk)
     comment = room.roomcomment_set.all().order_by('-created_on')
+    participants = room.participants.all()
     if request.method == 'POST':
-        user = request.user
-        comment = request.POST.get('comment')
         RoomComment.objects.create(
-            user=user,
-            comment=comment,
+            user=request.user,
+            comment=request.POST.get('comment'),
             room=room
         )
-        return redirect('room', pk)
-    context = {'room': room, 'comments': comment}
+        room.participants.add(request.user)
+        return redirect('room', pk=room.id)
+    context = {'room': room, 'comments': comment, 'participants': participants}
     return render(request, 'new_app/room.html', context)
 
 
@@ -118,3 +118,11 @@ def registerUser(request):
 def logoutUser(request):
     logout(request)
     return redirect('login')
+
+
+def deleteComment(request, pk):
+    pass
+
+
+def editComment(request, pk):
+    pass

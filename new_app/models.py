@@ -12,10 +12,10 @@ class Topic(models.Model):
 class Room(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
-    participant = models.ManyToManyField(
+    participants = models.ManyToManyField(
         User, blank=True, related_name="participants")
     name = models.CharField(max_length=50)
-    description = models.TextField(blank=True, null=True)
+    description = models.TextField(blank=True, default="")
 
     created_on = models.DateTimeField(auto_now_add=True, null=True)
     updated_on = models.DateTimeField(auto_now=True)
