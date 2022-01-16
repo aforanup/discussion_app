@@ -78,6 +78,18 @@ def delete(request, pk):
     return render(request, 'new_app/delete.html', {'obj': room})
 
 
+@login_required(login_url='login')
+def deleteComment(request, pk):
+    comment = RoomComment.objects.get(id=pk)
+    if request.user != comment.user:
+        return HttpResponse('You cannot delete this comment')
+
+    if request.method == 'POST':
+        comment.delete()
+        return redirect('home')
+    return render(request, 'new_app/delete.html', {'obj': comment})
+
+
 def loginUser(request):
     page = 'login'
 
@@ -118,10 +130,6 @@ def registerUser(request):
 def logoutUser(request):
     logout(request)
     return redirect('login')
-
-
-def deleteComment(request, pk):
-    pass
 
 
 def editComment(request, pk):

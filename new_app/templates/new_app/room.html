@@ -26,9 +26,11 @@
         {% for comment in comments %}
         <p>
             <small><b>{{comment.user}}</b> {{comment.created_on|timesince}} ago</small><br /> 
-            {{comment.comment}}
-            <a href="/"><small>delete</small></a>
+            {{comment.comment}}<br /> 
+            {% if request.user == comment.user %}
+            <a href="{% url 'delete-comment' comment.id%}"><small>delete</small></a>
             <a href="/"><small>edit</small></a>
+            {% endif %}
         </p>
         {% endfor %}
 
