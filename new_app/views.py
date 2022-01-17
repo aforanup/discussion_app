@@ -134,6 +134,7 @@ def logoutUser(request):
 
 def profileView(request, pk):
     user = User.objects.get(id=pk)
-    rooms = User.roomcomment_set.all()
-    context = {'user': user, 'rooms': rooms}
-    return render(request, 'profile_view.html', context)
+    rooms = user.room_set.all()
+    comment = user.roomcomment_set.all()
+    context = {'user': user, 'rooms': rooms, 'comments': comment}
+    return render(request, 'new_app/profile_view.html', context)

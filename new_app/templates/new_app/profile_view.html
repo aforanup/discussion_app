@@ -2,8 +2,28 @@
 
 {% block content %}
 
-<div>
-    {% include 'new_app/room_list.html' %}
+<style>
+    .profile-container {
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+    }
+</style>
+
+<div class="profile-container">
+    <div>
+        {% include 'new_app/room_list.html' %}
+    </div>
+    
+    <div>
+        Activity<br />
+        {% for comment in comments %}
+        <p>{{comment}}</p>
+        {% endfor %}
+    </div>
+<!--     
+    <div>
+
+    </div> -->
 </div>
 
 {% endblock %}
