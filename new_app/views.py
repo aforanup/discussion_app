@@ -132,5 +132,8 @@ def logoutUser(request):
     return redirect('login')
 
 
-def editComment(request, pk):
-    pass
+def profileView(request, pk):
+    user = User.objects.get(id=pk)
+    rooms = User.roomcomment_set.all()
+    context = {'user': user, 'rooms': rooms}
+    return render(request, 'profile_view.html', context)

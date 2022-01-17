@@ -14,33 +14,13 @@
     <div>
         <h3>Browse Topic</h3>
         <hr />
-        <a href="{% url 'home'%}">
-            <p>All</p>
-        </a>
-
-        {% for topic in topics %}
-            <a href="{% url 'home'%}?q={{topic.name}}">
-                <p>{{topic.name}}</p>    
-            </a>
-        {% endfor %}
+        {% include 'new_app/topic_list.html' %}
     </div>
     <div>
         <span>Total number of result is {{rooms_count}}</span>
         <a href="{% url 'create' %}"><h3>Create a New</h3></a>
         <div>        
-            {% for room in rooms %}
-            <p>
-                @{{room.user}}<br />
-                <a href="{% url 'room' room.id%}">
-                    {{room.id}} -- {{room.name }}
-                </a>
-                <br />
-                {% if request.user == room.user %}
-                <a href="{% url 'update' room.id%}">edit</a>
-                <a href="{% url 'delete' room.id%}">delete</a>
-                {% endif %}
-            </p>
-            {% endfor %}
+            {% include 'new_app/room_list.html' %}
         </div>
     </div>    
     <div>
